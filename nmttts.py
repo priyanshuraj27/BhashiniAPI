@@ -4,20 +4,16 @@ import json
 from dotenv import load_dotenv
 import os
 
-# Load API key
 load_dotenv()
 API_KEY = os.getenv("BHASHINI_API_KEY")
 
-# 📝 INPUT
 SOURCE_TEXT = "मैं हूँ प्रियांशु और मैं भाषिणी एपीआई टेस्ट कर रहा हूँ।"
-SOURCE_LANGUAGE = "hi"  # Input language
-TARGET_LANGUAGE = "en"  # Translated + TTS output language
+SOURCE_LANGUAGE = "hi" 
+TARGET_LANGUAGE = "en"  
 
-# Optional service IDs
 NMT_SERVICE_ID = ""
 TTS_SERVICE_ID = ""
 
-# Pipeline payload
 payload = {
     "pipelineTasks": [
         {
@@ -51,7 +47,6 @@ payload = {
     }
 }
 
-# Send request
 headers = {
     "Authorization": API_KEY,
     "Content-Type": "application/json"
@@ -63,20 +58,19 @@ response = requests.post(
     json=payload
 )
 
-# Process response
 print(f"Status Code: {response.status_code}")
 try:
     result = response.json()
     print("✅ Full Pipeline Output:")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
-    # Extract translated text
+    
     for task in result.get("pipelineResponse", []):
         if task["taskType"] == "translation":
             translated = task["output"][0]["target"]
             print("\n🌐 Translated Text:", translated)
 
-    # Extract TTS audio and save
+  
     for task in result.get("pipelineResponse", []):
         if task["taskType"] == "tts":
             audio_base64 = task["audio"][0]["audioContent"]

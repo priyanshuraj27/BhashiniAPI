@@ -4,7 +4,6 @@ import json
 from dotenv import load_dotenv
 import os
 
-# Load API key from .env
 load_dotenv()
 API_KEY = os.getenv("BHASHINI_API_KEY")
 
@@ -15,7 +14,6 @@ headers = {
     "Content-Type": "application/json"
 }
 
-# Bhojpuri TTS Request
 payload = {
     "pipelineTasks": [
         {
@@ -39,12 +37,10 @@ payload = {
     }
 }
 
-# Send request
 response = requests.post(url, headers=headers, json=payload)
 
 print(f"Status Code: {response.status_code}")
 
-# Save the audio
 try:
     data = response.json()
     audio_base64 = data["pipelineResponse"][0]["audio"][0]["audioContent"]

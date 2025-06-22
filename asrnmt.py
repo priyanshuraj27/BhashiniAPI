@@ -4,24 +4,20 @@ import json
 from dotenv import load_dotenv
 import os
 
-# Load API key
 load_dotenv()
 API_KEY = os.getenv("BHASHINI_API_KEY")
 
 # Language setup
 SOURCE_LANGUAGE = "en"
 TARGET_LANGUAGE = "hi"
-AUDIO_FILE_PATH = "audio_hi.wav"  # Make sure this is 16kHz mono FLAC
+AUDIO_FILE_PATH = "audio_hi.wav"  
 
-# Optional service IDs (leave blank if not known)
 ASR_SERVICE_ID = ""
 NMT_SERVICE_ID = ""
 
-# Base64 encode the audio
 with open(AUDIO_FILE_PATH, "rb") as audio_file:
     audio_base64 = base64.b64encode(audio_file.read()).decode("utf-8")
 
-# Prepare the payload
 payload = {
     "pipelineTasks": [
         {
@@ -55,7 +51,6 @@ payload = {
     }
 }
 
-# Send request
 headers = {
     "Authorization": API_KEY,
     "Content-Type": "application/json"
@@ -67,7 +62,6 @@ response = requests.post(
     json=payload
 )
 
-# Show result
 print(f"Status Code: {response.status_code}")
 try:
     result = response.json()
